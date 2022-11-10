@@ -1,5 +1,6 @@
 package com.androidandrew.fleetio_assessment.network
 
+import com.androidandrew.fleetio_assessment.data.Vehicle
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 
@@ -14,3 +15,13 @@ data class FleetioVehicle(
     val make: String? = null,
     val model: String? = null
 )
+
+fun FleetioVehicle.toDomainModel(): Vehicle {
+    return Vehicle(
+        id = id,
+        name = name,
+        thumbnailUrl = imageUrlMedium,
+        make = make,
+        model = model
+    )
+}

@@ -19,7 +19,7 @@ var retrofit: Retrofit = Retrofit.Builder()
     .addConverterFactory(json.asConverterFactory(MediaType.get("application/json")))
     .build()
 
-interface FleetioVehiclesService {
+interface IFleetioVehiclesService {
     @Headers(
         // Removed for commit. Move to gradle.properties later.
     )
@@ -27,4 +27,5 @@ interface FleetioVehiclesService {
     suspend fun getVehicles(): List<FleetioVehicle>
 }
 
-val fleetioVehiclesService: FleetioVehiclesService = retrofit.create(FleetioVehiclesService::class.java)
+@ExperimentalSerializationApi
+val fleetioVehiclesService: IFleetioVehiclesService = retrofit.create(IFleetioVehiclesService::class.java)

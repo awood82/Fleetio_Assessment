@@ -2,7 +2,7 @@ package com.androidandrew.fleetio_assessment.network
 
 import kotlinx.serialization.decodeFromString
 
-object FakeVehiclesService : FleetioVehiclesService {
+object FakeVehiclesService : IFleetioVehiclesService {
     override suspend fun getVehicles(): List<FleetioVehicle> {
         val vehicles = json.decodeFromString<Array<FleetioVehicle>>(cachedResponse)
         return vehicles.toList()
