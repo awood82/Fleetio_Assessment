@@ -79,6 +79,9 @@ dependencies {
     //JSON Parsing
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$json_parsing_version"
 
+    // Coil for asynchronous image loading
+    implementation "io.coil-kt:coil-compose:$coil_version"
+
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
 

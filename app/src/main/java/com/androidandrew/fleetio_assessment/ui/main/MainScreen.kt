@@ -12,9 +12,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.androidandrew.fleetio_assessment.R
 import com.androidandrew.fleetio_assessment.data.Vehicle
 import com.androidandrew.fleetio_assessment.ui.theme.Fleetio_AssessmentTheme
@@ -56,9 +59,13 @@ fun VehicleItem(
 ) {
     Column(modifier = modifier) {
         Row() {
-            Image(
-                painter = painterResource(android.R.drawable.ic_dialog_info),
-                contentDescription = null
+            AsyncImage(
+                model = ImageRequest.Builder(context = LocalContext.current)
+                    .data(vehicle.thumbnailUrl)
+                    .build(),
+                contentDescription = null,
+                placeholder = painterResource(android.R.drawable.ic_dialog_info),
+                error = painterResource(android.R.drawable.ic_dialog_alert)
             )
         }
         Row() {

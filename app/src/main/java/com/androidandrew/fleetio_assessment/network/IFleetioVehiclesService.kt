@@ -3,7 +3,7 @@ package com.androidandrew.fleetio_assessment.network
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -16,7 +16,7 @@ val json = Json { ignoreUnknownKeys = true }
 var retrofit: Retrofit = Retrofit.Builder()
     .baseUrl(BASE_URL)
 //    .addConverterFactory(ScalarsConverterFactory.create())
-    .addConverterFactory(json.asConverterFactory(MediaType.get("application/json")))
+    .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
     .build()
 
 interface IFleetioVehiclesService {
