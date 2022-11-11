@@ -27,4 +27,7 @@ class MainViewModelTest {
 
         assertTrue(viewModel.uiState is MainUiState.Success)
     }
+
+    // TODO: Dependency injection is needed to test Loading and Error states
+    
 }
