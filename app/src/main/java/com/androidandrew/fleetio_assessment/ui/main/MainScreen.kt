@@ -1,13 +1,21 @@
 package com.androidandrew.fleetio_assessment.ui.main
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.androidandrew.fleetio_assessment.R
 import com.androidandrew.fleetio_assessment.data.Vehicle
 import com.androidandrew.fleetio_assessment.ui.theme.Fleetio_AssessmentTheme
 
@@ -16,7 +24,29 @@ fun MainScreen(
     modifier: Modifier = Modifier
 ) {
     val viewModel = MainViewModel()
-    NetworkResults(results = viewModel.uiState)
+    when (val state = viewModel.uiState) {
+        is MainUiState.Success -> { VehicleGrid(vehicles = state.vehicles) }
+        is MainUiState.Loading -> { NetworkResults(results = stringResource(R.string.loading)) }
+        is MainUiState.Error -> { NetworkResults(results = state.errorMessage) }
+    }
+}
+
+@Composable
+fun VehicleGrid(
+    vehicles: List<Vehicle>,
+    modifier: Modifier = Modifier
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2), // TODO: Adaptive? What size are these thumbnails?
+        modifier = modifier.fillMaxWidth()
+    ) {
+        items(
+            items = vehicles,
+            key = { vehicle -> vehicle.id }
+        ) { vehicle ->
+            VehicleItem(vehicle = vehicle)
+        }
+    }
 }
 
 @Composable
@@ -46,8 +76,15 @@ fun VehicleItem(
 }
 
 @Composable
-fun NetworkResults(results: String) {
-    Text(text = results)
+fun NetworkResults(
+    results: String,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = results)
+    }
 }
 
 @Preview(showBackground = true)

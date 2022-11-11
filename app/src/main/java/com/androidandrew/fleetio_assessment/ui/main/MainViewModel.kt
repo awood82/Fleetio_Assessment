@@ -8,23 +8,30 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.androidandrew.fleetio_assessment.data.DefaultVehicleRepository
 import com.androidandrew.fleetio_assessment.data.IVehicleRepository
+import com.androidandrew.fleetio_assessment.data.Vehicle
 import kotlinx.coroutines.launch
+
+sealed interface MainUiState {
+    data class Success(val vehicles: List<Vehicle>): MainUiState
+    data class Error(val errorMessage: String): MainUiState
+    data class Loading(val dummy: String): MainUiState
+}
 
 class MainViewModel : ViewModel() {
 
     var vehicleRepository: IVehicleRepository = DefaultVehicleRepository()
-    var uiState: String by mutableStateOf("")
+    var uiState: MainUiState by mutableStateOf(MainUiState.Loading(""))
 
     init {
         viewModelScope.launch {
+            uiState = MainUiState.Loading("")
             uiState = try {
                 val response = vehicleRepository.getVehicles()
-                val item = response[10]
-                "Found ${response.size} vehicles.\n11th one is: $item"
+                MainUiState.Success(response)
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.e("TAG", "Error: ${e.localizedMessage}")
-                e.localizedMessage?.toString() ?: "Generic error message"
+                MainUiState.Error(e.localizedMessage ?: "")
             }
         }
     }
