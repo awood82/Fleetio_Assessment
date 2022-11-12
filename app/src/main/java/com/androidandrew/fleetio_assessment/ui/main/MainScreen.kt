@@ -1,6 +1,7 @@
 package com.androidandrew.fleetio_assessment.ui.main
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -23,11 +24,17 @@ import com.androidandrew.fleetio_assessment.ui.theme.Fleetio_AssessmentTheme
 
 @Composable
 fun MainScreen(
+    onVehicleClicked: (Vehicle) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val viewModel = MainViewModel()
     when (val state = viewModel.uiState) {
-        is MainUiState.Success -> { VehicleGrid(vehicles = state.vehicles) }
+        is MainUiState.Success -> {
+            VehicleGrid(
+                vehicles = state.vehicles,
+                onVehicleClicked = onVehicleClicked
+            )
+        }
         is MainUiState.Loading -> { NetworkResults(results = stringResource(R.string.loading)) }
         is MainUiState.Error -> { NetworkResults(results = state.errorMessage) }
     }
@@ -36,6 +43,7 @@ fun MainScreen(
 @Composable
 fun VehicleGrid(
     vehicles: List<Vehicle>,
+    onVehicleClicked: (Vehicle) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
@@ -46,7 +54,12 @@ fun VehicleGrid(
             items = vehicles,
             key = { vehicle -> vehicle.id }
         ) { vehicle ->
-            VehicleItem(vehicle = vehicle)
+            VehicleItem(
+                vehicle = vehicle,
+                modifier = modifier
+                    .clickable(onClick = { onVehicleClicked(vehicle) }
+                )
+            )
         }
     }
 }
@@ -59,7 +72,7 @@ fun VehicleItem(
     Row(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.default_spacing)),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(dimensionResource(R.dimen.default_padding))
             .testTag(vehicle.id.toString())
