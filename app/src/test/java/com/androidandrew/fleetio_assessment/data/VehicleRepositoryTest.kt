@@ -5,6 +5,7 @@ import com.androidandrew.fleetio_assessment.fake.FakeVehicleSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
@@ -17,5 +18,14 @@ class VehicleRepositoryTest {
         val vehicles = fakeRepo.getVehicles()
 
         assertEquals(FakeVehicleSource.numVehicles, vehicles.size)
+    }
+
+    @Test
+    fun getVehicleDetails_withEmptyDriver_returnsDetails() = runTest {
+        val fakeRepo = FakeVehicleRepository()
+
+        val details = fakeRepo.getVehicleDetailsWithEmptyDriver()
+
+        assertNull(details.driver)
     }
 }

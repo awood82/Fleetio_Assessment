@@ -17,9 +17,10 @@ sealed interface DetailsUiState {
     object Loading: DetailsUiState
 }
 
-class DetailsViewModel(vehicleId: Long) : ViewModel() {
-
-    var vehicleRepository: IVehicleRepository = DefaultVehicleRepository()
+class DetailsViewModel(
+    vehicleId: Long,
+    private val vehicleRepository: IVehicleRepository
+) : ViewModel() {
     var uiState: DetailsUiState by mutableStateOf(DetailsUiState.Loading)
     private lateinit var vehicleDetails: VehicleDetails
 
@@ -27,6 +28,7 @@ class DetailsViewModel(vehicleId: Long) : ViewModel() {
         viewModelScope.launch {
             uiState = DetailsUiState.Loading
             uiState = try {
+//                android.util.Log.e("TAG", "DetailsView Model id = $vehicleId")
                 vehicleDetails = vehicleRepository.getVehicleDetails(vehicleId)
                 DetailsUiState.Success(vehicleDetails)
             } catch (e: Exception) {

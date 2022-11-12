@@ -6,17 +6,21 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class FleetioDriver(
-    val id: Long,
-    @SerialName("first_name") val firstName: String,
+    val id: Long? = null,
+    @SerialName("first_name") val firstName: String? = null,
     @SerialName("last_name") val lastName: String? = null,
-    @SerialName("full_name") val fullName: String,
+    @SerialName("full_name") val fullName: String? = null,
     @SerialName("default_image_url") val imgUrl: String? = null
 )
 
-fun FleetioDriver.toDomainModel(): Driver {
-    return Driver(
-        id = id,
-        fullName = fullName,
-        imgUrl = imgUrl
-    )
+fun FleetioDriver.toDomainModel(): Driver? {
+    return if (this.id != null) {
+        Driver(
+            id = id,
+            fullName = fullName ?: "",
+            imgUrl = imgUrl
+        )
+    } else {
+        null
+    }
 }

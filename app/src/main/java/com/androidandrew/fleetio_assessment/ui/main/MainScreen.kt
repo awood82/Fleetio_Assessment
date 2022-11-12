@@ -3,9 +3,7 @@ package com.androidandrew.fleetio_assessment.ui.main
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,21 +15,26 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import com.androidandrew.fleetio_assessment.R
 import com.androidandrew.fleetio_assessment.data.Vehicle
 import com.androidandrew.fleetio_assessment.ui.component.LoadingScreen
 import com.androidandrew.fleetio_assessment.ui.theme.Fleetio_AssessmentTheme
+import org.koin.androidx.compose.get
 
 @Composable
 fun MainScreen(
     onVehicleClicked: (Vehicle) -> Unit,
+    viewModel: MainViewModel = get(),
     modifier: Modifier = Modifier
 ) {
-    val viewModel = MainViewModel()
     when (val state = viewModel.uiState) {
         is MainUiState.Success -> {
             VehicleGrid(
-                vehicles = state.vehicles,
+//                vehicles = state.vehicles,
+                pagedVehicles = state.vehicles.collectAsLazyPagingItems(),
                 onVehicleClicked = onVehicleClicked
             )
         }
@@ -42,20 +45,20 @@ fun MainScreen(
 
 @Composable
 fun VehicleGrid(
-    vehicles: List<Vehicle>,
+    pagedVehicles: LazyPagingItems<Vehicle>,
     onVehicleClicked: (Vehicle) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(1), // TODO: Adaptive? What size are these thumbnails?
+    android.util.Log.e("VehicleGrid", "flow size = ${pagedVehicles.itemCount}")
+    LazyColumn(
         modifier = modifier.fillMaxWidth()
     ) {
         items(
-            items = vehicles,
+            items = pagedVehicles,
             key = { vehicle -> vehicle.id }
         ) { vehicle ->
             VehicleItem(
-                vehicle = vehicle,
+                vehicle = vehicle!!,
                 modifier = modifier
                     .clickable(onClick = { onVehicleClicked(vehicle) }
                 )
@@ -89,7 +92,8 @@ fun VehicleItem(
             painter = painterResource(R.drawable.ic_loading_image),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.size(80.dp)
+            modifier = Modifier
+                .size(80.dp)
                 .testTag(vehicle.thumbnailUrl ?: "")
         )
         Column() {

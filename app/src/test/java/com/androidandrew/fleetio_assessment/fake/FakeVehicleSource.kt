@@ -3,6 +3,70 @@ package com.androidandrew.fleetio_assessment.fake
 object FakeVehicleSource {
     const val numVehicles = 10
 
+    val detailResponseEmptyDriver = """
+    {
+  "id": 1851804,
+  "meter_unit": "km",
+  "name": "258218",
+  "secondary_meter": false,
+  "secondary_meter_unit": null,
+  "vehicle_status_name": "Active",
+  "current_location_entry_id": 416049688,
+  "meter_name": "Odometer",
+  "secondary_meter_name": "Secondary Meter",
+  "primary_meter_usage_per_day": "52.4",
+  "secondary_meter_usage_per_day": "0.0",
+  "created_at": "2022-04-25T09:34:40.055-07:00",
+  "updated_at": "2022-11-10T23:48:34.128-08:00",
+  "current_meter_value": 170150,
+  "current_meter_date": "2022-11-10",
+  "secondary_meter_value": 0,
+  "secondary_meter_date": null,
+  "color": null,
+  "license_plate": null,
+  "make": "Peterbilt",
+  "model": "389",
+  "vin": "1XPXD49X7JD468892",
+  "year": 2018,
+  "type_name": "Semi-Trailer Truck",
+  "default_image_url": null,
+  "default_image_url_medium": null,
+  "default_image_url_small": null,
+  "default_image_url_large": null,
+  "driver": {},
+  "current_location_entry": {
+    "id": 416049688,
+    "locatable_type": "FuelEntry",
+    "locatable_id": 42775473,
+    "date": "2022-11-09T22:14:00.000-08:00",
+    "created_at": "2022-11-10T23:47:23.035-08:00",
+    "updated_at": "2022-11-10T23:48:12.296-08:00",
+    "contact_id": null,
+    "address": "433 NE County Rd, Crane, TX 79731, USA",
+    "is_current": true,
+    "item_type": "Vehicle",
+    "item_id": 1851804,
+    "vehicle_id": 1851804,
+    "location": "POINT (-102.348618 31.406998)",
+    "address_components": {
+      "street_number": "433",
+      "street": "Northeast County Road",
+      "city": "Crane",
+      "region": "Texas",
+      "region_short": "TX",
+      "country": "United States",
+      "country_short": "US",
+      "postal_code": "79731"
+    },
+    "geolocation": {
+      "latitude": 31.406998,
+      "longitude": -102.348618
+    }
+  },
+  "documents_including_nested_resources_count": 0
+}
+""".trimIndent()
+
     const val fakeResponse = """
     [
       {

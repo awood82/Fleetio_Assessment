@@ -20,6 +20,8 @@ import com.androidandrew.fleetio_assessment.R
 import com.androidandrew.fleetio_assessment.data.VehicleDetails
 import com.androidandrew.fleetio_assessment.ui.component.LoadingScreen
 import com.androidandrew.fleetio_assessment.ui.theme.Fleetio_AssessmentTheme
+import org.koin.androidx.compose.get
+import org.koin.core.parameter.parametersOf
 
 // https://developer.android.com/jetpack/compose/navigation strongly recommends against passing a complex argument,
 // so this screen is only accepting a Long for the ID and not a Vehicle or more complex data type.
@@ -28,10 +30,9 @@ import com.androidandrew.fleetio_assessment.ui.theme.Fleetio_AssessmentTheme
 @Composable
 fun DetailsScreen(
     vehicleId: Long, //TODO: Vehicle or VehicleDetails?
+    viewModel: DetailsViewModel = get { parametersOf(vehicleId) },
     modifier: Modifier = Modifier
 ) {
-    val viewModel = DetailsViewModel(vehicleId)
-
     when (val state = viewModel.uiState) {
         is DetailsUiState.Success -> {
             VehicleDetailsSuccess(details = state.vehicleDetails)
@@ -100,14 +101,14 @@ fun DetailsText(
 fun MeterText(
     @StringRes textWithArgs: Int,
     name: String,
-    value: Long,
+    value: String,
     units: String,
     modifier: Modifier = Modifier
 ) {
     Text(
         text = stringResource(
             textWithArgs,
-            name, value.toString(), units
+            name, value, units
         ),
         style = MaterialTheme.typography.bodyLarge
     )
@@ -125,11 +126,11 @@ fun VehicleDetailsSuccessPreview() {
             model = "Bumper Car",
             status = "Damaged",
             meter1Name = "Odometer",
-            meter1Value = 10L,
+            meter1Value = "10",
             meter1Units = "mi",
             meter2Exists = true,
             meter2Name = "Crash Count",
-            meter2Value = 13489743L,
+            meter2Value = "13489743",
             meter2Units = "crashes",
             driver = null,
             vin = "12324234",
