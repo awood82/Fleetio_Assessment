@@ -15,11 +15,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.androidandrew.fleetio_assessment.R
 import com.androidandrew.fleetio_assessment.data.Vehicle
+import com.androidandrew.fleetio_assessment.ui.component.LoadingScreen
 import com.androidandrew.fleetio_assessment.ui.theme.Fleetio_AssessmentTheme
 
 @Composable
@@ -35,7 +35,7 @@ fun MainScreen(
                 onVehicleClicked = onVehicleClicked
             )
         }
-        is MainUiState.Loading -> { NetworkResults(results = stringResource(R.string.loading)) }
+        is MainUiState.Loading -> { LoadingScreen() }
         is MainUiState.Error -> { NetworkResults(results = state.errorMessage) }
     }
 }

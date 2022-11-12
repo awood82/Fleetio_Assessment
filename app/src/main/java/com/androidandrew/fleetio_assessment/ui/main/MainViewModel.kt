@@ -14,17 +14,17 @@ import kotlinx.coroutines.launch
 sealed interface MainUiState {
     data class Success(val vehicles: List<Vehicle>): MainUiState
     data class Error(val errorMessage: String): MainUiState
-    data class Loading(val dummy: String): MainUiState
+    object Loading: MainUiState
 }
 
 class MainViewModel : ViewModel() {
 
     var vehicleRepository: IVehicleRepository = DefaultVehicleRepository()
-    var uiState: MainUiState by mutableStateOf(MainUiState.Loading(""))
+    var uiState: MainUiState by mutableStateOf(MainUiState.Loading)
 
     init {
         viewModelScope.launch {
-            uiState = MainUiState.Loading("")
+            uiState = MainUiState.Loading
             uiState = try {
                 val response = vehicleRepository.getVehicles()
                 MainUiState.Success(response)

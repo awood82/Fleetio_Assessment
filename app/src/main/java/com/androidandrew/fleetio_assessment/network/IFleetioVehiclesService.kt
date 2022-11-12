@@ -7,6 +7,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Path
 
 private const val BASE_URL = "https://secure.fleetio.com"
 
@@ -25,6 +26,9 @@ interface IFleetioVehiclesService {
     )
     @GET("api/v1/vehicles")
     suspend fun getVehicles(): List<FleetioVehicle>
+
+    @GET("api/v1/vehicles/{id}")
+    suspend fun getVehicleDetails(@Path("id") id: String): FleetioVehicleDetails
 }
 
 @ExperimentalSerializationApi

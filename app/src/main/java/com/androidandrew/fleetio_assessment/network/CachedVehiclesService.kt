@@ -7,7 +7,149 @@ object CachedVehiclesService : IFleetioVehiclesService {
         val vehicles = json.decodeFromString<Array<FleetioVehicle>>(cachedResponse)
         return vehicles.toList()
     }
+
+    override suspend fun getVehicleDetails(id: String): FleetioVehicleDetails {
+        return json.decodeFromString<FleetioVehicleDetails>(cachedDetailResponse)
+    }
 }
+
+val cachedDetailResponse = """
+    {
+  "id": 2128326,
+  "account_id": 18,
+  "archived_at": null,
+  "fuel_type_id": null,
+  "fuel_type_name": null,
+  "fuel_volume_units": "us_gallons",
+  "group_id": 184261,
+  "group_name": "001 TEST Default",
+  "meter_unit": "mi",
+  "name": "001",
+  "ownership": "Owned",
+  "secondary_meter": false,
+  "secondary_meter_unit": null,
+  "system_of_measurement": "imperial",
+  "vehicle_status_id": 3261,
+  "vehicle_status_name": "Active",
+  "vehicle_status_color": "blue",
+  "vehicle_type_id": 144,
+  "vehicle_type_name": "Car",
+  "fuel_entries_count": 1,
+  "service_entries_count": 2,
+  "service_reminders_count": 0,
+  "vehicle_renewal_reminders_count": 0,
+  "comments_count": 1,
+  "documents_count": 4,
+  "images_count": 3,
+  "current_location_entry_id": 400194403,
+  "is_sample": false,
+  "in_service_date": null,
+  "in_service_meter": null,
+  "estimated_service_months": null,
+  "estimated_replacement_mileage": null,
+  "estimated_resale_price": null,
+  "out_of_service_date": null,
+  "out_of_service_meter": null,
+  "meter_name": "Odometer",
+  "secondary_meter_name": "Secondary Meter",
+  "primary_meter_usage_per_day": "0.0",
+  "secondary_meter_usage_per_day": "0.0",
+  "created_at": "2022-10-07T13:34:45.551-07:00",
+  "updated_at": "2022-11-11T10:33:48.035-08:00",
+  "current_meter_value": 1,
+  "current_meter_date": "2022-11-11",
+  "secondary_meter_value": 0,
+  "secondary_meter_date": null,
+  "group_ancestry": "001 TEST Default",
+  "color": null,
+  "license_plate": null,
+  "make": null,
+  "model": null,
+  "registration_expiration_month": 0,
+  "registration_state": null,
+  "trim": null,
+  "vin": null,
+  "year": null,
+  "loan_account_number": null,
+  "loan_ended_at": null,
+  "loan_interest_rate": null,
+  "loan_notes": null,
+  "loan_started_at": null,
+  "loan_vendor_id": null,
+  "loan_vendor_name": null,
+  "custom_fields": {
+    "telematics_subscription": "",
+    "restrict": "",
+    "warranty_expiration": "",
+    "warranty_type": "",
+    "toll_pass_number": "",
+    "rear_camera_enabled": "false",
+    "vehicle_cleanliness": "false",
+    "test": "false",
+    "checkbox_filter_test": "false",
+    "manufacturer_model": "",
+    "extra_rextra_read_all_about_it_this_is_a_super_long_field_name_my_guyyy": ""
+  },
+  "inspection_schedules_count": 10,
+  "issues_count": 0,
+  "work_orders_count": 4,
+  "type_name": "Car",
+  "default_image_url": "https://d8g9nhlfs6lwh.cloudfront.net/ICM5IE9QT8WM1fWCGKhr?signature=e1bf387376847dc881ac46d80ac0ca089532483f5f55b64305fc232b5d0b5488&policy=eyJoYW5kbGUiOiJJQ001SUU5UVQ4V00xZldDR0tociIsImV4cGlyeSI6NDUzNDk0OTM0MywiY2FsbCI6WyJyZWFkIl19",
+  "default_image_url_medium": "https://d8g9nhlfs6lwh.cloudfront.net/security=policy:eyJoYW5kbGUiOiJJQ001SUU5UVQ4V00xZldDR0tociIsImV4cGlyeSI6NDUzNDk0OTM0MywiY2FsbCI6WyJyZWFkIiwiY29udmVydCJdfQ==,signature:0b479c5ee7cf6c4e09f1942c423b8638e1ab219f73c4f1cce5962757da4423ed/resize=w:100,h:100,fit:crop/cache=expiry:max/rotate=exif:true/ICM5IE9QT8WM1fWCGKhr",
+  "default_image_url_small": "https://d8g9nhlfs6lwh.cloudfront.net/security=policy:eyJoYW5kbGUiOiJJQ001SUU5UVQ4V00xZldDR0tociIsImV4cGlyeSI6NDUzNDk0OTM0MywiY2FsbCI6WyJyZWFkIiwiY29udmVydCJdfQ==,signature:0b479c5ee7cf6c4e09f1942c423b8638e1ab219f73c4f1cce5962757da4423ed/resize=w:45,h:45,fit:crop/cache=expiry:max/rotate=exif:true/ICM5IE9QT8WM1fWCGKhr",
+  "default_image_url_large": "https://d8g9nhlfs6lwh.cloudfront.net/security=policy:eyJoYW5kbGUiOiJJQ001SUU5UVQ4V00xZldDR0tociIsImV4cGlyeSI6NDUzNDk0OTM0MywiY2FsbCI6WyJyZWFkIiwiY29udmVydCJdfQ==,signature:0b479c5ee7cf6c4e09f1942c423b8638e1ab219f73c4f1cce5962757da4423ed/resize=w:450,fit:scale/cache=expiry:max/rotate=exif:true/ICM5IE9QT8WM1fWCGKhr",
+  "driver": {
+    "id": 566231,
+    "first_name": "00 test",
+    "last_name": "(QA DO NOT TOUCH)",
+    "full_name": "00 test (QA DO NOT TOUCH)",
+    "default_image_url": null
+  },
+  "specs": {
+    "engine_bore_with_units": null,
+    "wheelbase_with_units": null
+  },
+  "external_ids": {
+    "clearpathgps": null,
+    "external_fuel_id": null,
+    "fuel_id": null,
+    "task_code": null,
+    "traxxis_id": null
+  },
+  "ai_enabled": false,
+  "assetable_type": "Vehicle",
+  "current_location_entry": {
+    "id": 400194403,
+    "locatable_type": "SubmittedInspectionForm",
+    "locatable_id": 26590292,
+    "date": "2022-10-14T09:44:58.813-05:00",
+    "created_at": "2022-10-14T09:45:01.345-05:00",
+    "updated_at": "2022-10-14T09:45:01.842-05:00",
+    "contact_id": null,
+    "address": "1600 Amphitheatre Pkwy Building 43, Mountain View, CA 94043, USA",
+    "is_current": true,
+    "item_type": "Vehicle",
+    "item_id": 2128326,
+    "vehicle_id": 2128326,
+    "location": "POINT (-122.08392 37.421494)",
+    "address_components": {
+      "street_number": "1600",
+      "street": "Amphitheatre Parkway",
+      "city": "Mountain View",
+      "region": "California",
+      "region_short": "CA",
+      "country": "United States",
+      "country_short": "US",
+      "postal_code": "94043"
+    },
+    "geolocation": {
+      "latitude": 37.421494,
+      "longitude": -122.08392
+    }
+  },
+  "documents_including_nested_resources_count": 6
+}
+""".trimIndent()
 
 val cachedResponse = """
     [
