@@ -24,7 +24,7 @@ class DefaultVehicleRepository(private val service: IFleetioVehiclesService) : I
     override fun getVehiclesFlow(): Flow<PagingData<Vehicle>> {
         return Pager(
             config = PagingConfig(
-                pageSize = IFleetioVehiclesService.VEHICLES_PER_PAGE, // TODO: Can I use less than 100?
+                pageSize = IFleetioVehiclesService.VEHICLES_PER_PAGE,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { VehiclePagingSource(service) }

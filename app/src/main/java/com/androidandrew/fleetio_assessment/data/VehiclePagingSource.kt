@@ -19,7 +19,7 @@ class VehiclePagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Vehicle> {
         val position = params.key ?: IFleetioVehiclesService.FIRST_PAGE
         try {
-            val vehicles = service.getVehicles(position) // TODO: Any way to change the page size?
+            val vehicles = service.getVehicles(position)
             val nextKey = when (vehicles.isEmpty()) {
                 true -> null // The server returns an empty result set when the page > Pagination-Total-Pages
                 false -> {
@@ -27,7 +27,6 @@ class VehiclePagingSource(
                 }
             }
             android.util.Log.e("PAGING", "Load. pos=$position, next=$nextKey")
-            //delay(3000)
             return LoadResult.Page(
                 data = vehicles.map { it.toDomainModel() },
                 nextKey = nextKey,
