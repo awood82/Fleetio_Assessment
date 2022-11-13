@@ -16,14 +16,14 @@ import kotlinx.serialization.json.Json
 class FakeVehicleRepository : IVehicleRepository {
     private val json = Json { ignoreUnknownKeys = true }
 
-    override suspend fun getVehicles(): List<Vehicle> {
+    override suspend fun getVehicles(makeFilter: String?): List<Vehicle> {
         val vehicles = json.decodeFromString<Array<FleetioVehicle>>(FakeVehicleSource.fakeResponse)
         return vehicles.map {
             it.toDomainModel()
         }.toList()
     }
 
-    override fun getVehiclesFlow(): Flow<PagingData<Vehicle>> {
+    override fun getVehiclesFlow(makeFilter: String?): Flow<PagingData<Vehicle>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20,  // Make it smaller for testing since we have fewer items (max 100)

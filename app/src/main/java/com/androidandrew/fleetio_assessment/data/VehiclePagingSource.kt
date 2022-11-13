@@ -4,9 +4,9 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.androidandrew.fleetio_assessment.network.IFleetioVehiclesService
 import com.androidandrew.fleetio_assessment.network.toDomainModel
-import kotlinx.coroutines.delay
 
 class VehiclePagingSource(
+    private val makeFilter: String?,
     private val service: IFleetioVehiclesService
 ) : PagingSource<Int, Vehicle>() {
     override fun getRefreshKey(state: PagingState<Int, Vehicle>): Int? {
@@ -19,14 +19,14 @@ class VehiclePagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Vehicle> {
         val position = params.key ?: IFleetioVehiclesService.FIRST_PAGE
         try {
-            val vehicles = service.getVehicles(position)
+            val vehicles = service.getVehicles(makeFilter, position)
             val nextKey = when (vehicles.isEmpty()) {
                 true -> null // The server returns an empty result set when the page > Pagination-Total-Pages
                 false -> {
                     position + (params.loadSize / IFleetioVehiclesService.VEHICLES_PER_PAGE)
                 }
             }
-            android.util.Log.e("PAGING", "Load. pos=$position, next=$nextKey")
+//            android.util.Log.e("PAGING", "Load. pos=$position, next=$nextKey")
             return LoadResult.Page(
                 data = vehicles.map { it.toDomainModel() },
                 nextKey = nextKey,

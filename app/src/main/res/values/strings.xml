@@ -5,6 +5,9 @@
     <string name="thumbnail">Thumbnail</string>
     <string name="unknown">Unknown</string>
 
+    <string name="search_icon">Search</string>
+    <string name="search_filter_by_make">Filter by make</string>
+
     <string name="name_details">Name: %s</string>
     <string name="make_details">Make: %s</string>
     <string name="model_details">Model: %s</string>

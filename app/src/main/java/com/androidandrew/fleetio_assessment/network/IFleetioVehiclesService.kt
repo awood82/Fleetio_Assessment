@@ -15,15 +15,27 @@ interface IFleetioVehiclesService {
     }
 
     @Headers(
-        // Removed for commit. Move to gradle.properties later.
+        "Authorization: Token token=a3ddc620b35b609682192c167de1b1f3f5100387",
+        "Account-Token: 798819214b"
     )
     @GET("api/v1/vehicles")
     suspend fun getVehicles(
+        @Query("q[make_cont]") make: String? = null,
         @Query("page") page: Int = FIRST_PAGE
     ): List<FleetioVehicle>
 
+//    @Headers(
+//        // Removed for commit. Move to gradle.properties later.
+//    )
+//    @GET("api/v1/vehicles")
+//    suspend fun getVehiclesFilteredByModel(
+//        @Query("q[model_cont]") model: String? = null,
+//        @Query("page") page: Int = FIRST_PAGE
+//    ): List<FleetioVehicle>
+
     @Headers(
-        // Removed for commit. Move to gradle.properties later.
+        "Authorization: Token token=a3ddc620b35b609682192c167de1b1f3f5100387",
+        "Account-Token: 798819214b"
     )
     @GET("api/v1/vehicles/{id}")
     suspend fun getVehicleDetails(@Path("id") id: String): FleetioVehicleDetails

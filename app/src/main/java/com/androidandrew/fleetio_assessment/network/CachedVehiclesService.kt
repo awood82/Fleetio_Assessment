@@ -4,7 +4,7 @@ import com.androidandrew.fleetio_assessment.network.IFleetioVehiclesService.Comp
 import kotlinx.serialization.decodeFromString
 
 object CachedVehiclesService : IFleetioVehiclesService {
-    override suspend fun getVehicles(page: Int): List<FleetioVehicle> {
+    override suspend fun getVehicles(makeFilter: String?, page: Int): List<FleetioVehicle> {
         val vehicles = json.decodeFromString<Array<FleetioVehicle>>(cachedResponse)
         val startIndex = (page - 1) * IFleetioVehiclesService.VEHICLES_PER_PAGE
         val range = startIndex to startIndex + IFleetioVehiclesService.VEHICLES_PER_PAGE - 1

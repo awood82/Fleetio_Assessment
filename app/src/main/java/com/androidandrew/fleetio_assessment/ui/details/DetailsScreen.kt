@@ -12,10 +12,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.androidandrew.fleetio_assessment.R
 import com.androidandrew.fleetio_assessment.data.VehicleDetails
 import com.androidandrew.fleetio_assessment.ui.component.LoadingScreen
@@ -52,9 +55,13 @@ fun VehicleDetailsSuccess(
             .verticalScroll(rememberScrollState())
             .padding(dimensionResource(R.dimen.default_padding))
     ) {
-        Image(
-            painterResource(R.drawable.ic_error_image),
+        AsyncImage(
+            model = ImageRequest.Builder(context = LocalContext.current)
+                .data(details.largeImageUrl)
+                .build(),
             contentDescription = stringResource(R.string.thumbnail),
+            placeholder = painterResource(R.drawable.ic_loading_image),
+            error = painterResource(R.drawable.ic_error_image),
             contentScale = ContentScale.FillWidth,
             modifier = modifier.fillMaxWidth()
         )
@@ -75,9 +82,9 @@ fun VehicleDetailsSuccess(
         if (details.meter2Exists) {
             MeterText(
                 textWithArgs = R.string.meter_details,
-                name = details.meter2Name!!,
-                value = details.meter2Value!!,
-                units = details.meter2Units!!
+                name = details.meter2Name,
+                value = details.meter2Value,
+                units = details.meter2Units
             )
         }
         DetailsText(textWithArgs = R.string.vin_details, details.vin)
@@ -100,15 +107,18 @@ fun DetailsText(
 @Composable
 fun MeterText(
     @StringRes textWithArgs: Int,
-    name: String,
-    value: String,
-    units: String,
+    name: String?,
+    value: String?,
+    units: String?,
     modifier: Modifier = Modifier
 ) {
+    val unknown = stringResource(R.string.unknown)
     Text(
         text = stringResource(
             textWithArgs,
-            name, value, units
+            name ?: unknown,
+            value ?: unknown,
+            units ?: unknown
         ),
         style = MaterialTheme.typography.bodyLarge
     )

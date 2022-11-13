@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.androidandrew.fleetio_assessment.data.IVehicleRepository
 import com.androidandrew.fleetio_assessment.data.Vehicle
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -21,13 +22,18 @@ class MainViewModel(private val vehicleRepository: IVehicleRepository) : ViewMod
 
     var uiState: MainUiState by mutableStateOf(MainUiState.Loading)
 //    lateinit var theFlow: Flow<PagingData<Vehicle>>
+    var searchJob: Job? = null
 
     init {
-        viewModelScope.launch {
+        performSearch()
+    }
+
+    fun performSearch(makeFilter: String? = null) {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
             uiState = MainUiState.Loading
             uiState = try {
-                val response = vehicleRepository.getVehiclesFlow()
-//                val response = vehicleRepository.getVehicles()
+                val response = vehicleRepository.getVehiclesFlow(makeFilter)
                 MainUiState.Success(response)
             } catch (e: Exception) {
                 e.printStackTrace()

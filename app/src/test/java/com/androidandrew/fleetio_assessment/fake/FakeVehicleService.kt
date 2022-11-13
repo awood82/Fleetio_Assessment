@@ -7,7 +7,7 @@ import com.androidandrew.fleetio_assessment.network.IFleetioVehiclesService.Comp
 import kotlinx.serialization.decodeFromString
 
 class FakeVehicleService : IFleetioVehiclesService {
-    override suspend fun getVehicles(page: Int): List<FleetioVehicle> {
+    override suspend fun getVehicles(makeFilter: String?, page: Int): List<FleetioVehicle> {
         val vehicles = json.decodeFromString<Array<FleetioVehicle>>(FakeVehicleSource.fakeResponse)
         return vehicles.toList()
     }

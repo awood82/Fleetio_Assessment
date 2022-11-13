@@ -30,13 +30,11 @@ val appModule = module {
         return retrofit.create(IFleetioVehiclesService::class.java)
     }
 
-
-
-    single<IFleetioVehiclesService> { CachedVehiclesService }
-//    single<IFleetioVehiclesService> { provideVehiclesService() }
+//    single<IFleetioVehiclesService> { CachedVehiclesService } // For testing w/ cached responses
+    single<IFleetioVehiclesService> { provideVehiclesService() } // To use the real server
     single<IVehicleRepository> { DefaultVehicleRepository(get()) }
 
-    factory { VehiclePagingSource(get()) }
+    factory { parameters -> VehiclePagingSource(makeFilter = parameters.get(), get()) }
 
     viewModel { MainViewModel(get()) }
     viewModel { parameters -> DetailsViewModel(vehicleId = parameters.get(), get()) }
